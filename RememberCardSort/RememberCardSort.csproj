@@ -22,6 +22,7 @@
         <AutoSteamPath>$(registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)\steamapps</AutoSteamPath>
         <SteamLibraryPath Condition="Exists('$(AutoSteamPath)/common/Slay the Spire 2')">$(AutoSteamPath)</SteamLibraryPath>
 
+        <GodotPath>C:/megadot/MegaDot_v4.5.1-stable_mono_win64.exe</GodotPath>
         <SteamLibraryPath Condition="'$(SteamLibraryPath)' == ''">C:/Program Files (x86)/Steam/steamapps</SteamLibraryPath>
         <Sts2Path>$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
         <ModsPath>$(Sts2Path)/mods/</ModsPath>
@@ -35,6 +36,7 @@
 
     <PropertyGroup Condition="'$(IsOSX)' == 'true'">
         <SteamLibraryPath Condition="'$(SteamLibraryPath)' == ''">$(HOME)/Library/Application Support/Steam/steamapps</SteamLibraryPath>
+        <GodotPath Condition="'$(GodotPath)' == ''">$(HOME)/Applications/Godot_mono.app/Contents/MacOS/Godot</GodotPath>
         <Sts2Path>$(SteamLibraryPath)/common/Slay the Spire 2</Sts2Path>
         <ModsPath>$(Sts2Path)/SlayTheSpire2.app/Contents/MacOS/mods/</ModsPath>
         <Sts2DataDir>$(Sts2Path)/SlayTheSpire2.app/Contents/Resources/data_sts2_macos_x86_64</Sts2DataDir>
@@ -43,6 +45,10 @@
     <PropertyGroup>
         <NoWarn>$(NoWarn);MSB3270;STS002</NoWarn>
         <BaseLibVersion>3.1.0</BaseLibVersion>
+        <!-- Flip to false (and keep RememberCardSort.json has_pck in sync) if
+             we ever drop the .pck contents. While true, GodotPublish runs and
+             ships the mod_image.png inside RememberCardSort.pck. -->
+        <HasPck>true</HasPck>
     </PropertyGroup>
 
     <!-- DeployToMods gates the post-build copy. Default false so a plain
@@ -67,10 +73,28 @@
         <PackageReference Include="Alchyr.Sts2.BaseLib" Version="$(BaseLibVersion)" PrivateAssets="All" />
     </ItemGroup>
 
+    <!-- The inner RememberCardSort/ subdir is .pck content (mod_image.png,
+         eventual localization, scenes). Don't compile it as C#, but keep it
+         visible in IDEs as None items so files show up in solution view. -->
+    <ItemGroup>
+        <Compile Remove="RememberCardSort/**" />
+        <EmbeddedResource Remove="RememberCardSort/**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include=".gitignore" />
+        <None Include="RememberCardSort.json" />
+        <None Include="project.godot" />
+        <None Include="RememberCardSort/**" />
+    </ItemGroup>
+
     <Target Name="CheckDependencyPaths">
         <Error
             Text=" Slay the Spire 2 data not found at path '$(Sts2DataDir)'"
             Condition="'$(Sts2DataDir)' == '' or !Exists('$(Sts2DataDir)')" />
+        <Warning
+            Text=" Godot not found at path '$(GodotPath)' - .pck export will be skipped (mod image will not appear in the mod menu)."
+            Condition="'$(HasPck)' == 'true' and ('$(GodotPath)' == '' or !Exists('$(GodotPath)'))" />
     </Target>
 
     <Target Name="CopyToModsFolderOnBuild" AfterTargets="PostBuildEvent"
@@ -83,6 +107,40 @@
             <BaseLibFiles Include="$(NuGetPackageRoot)/alchyr.sts2.baselib/$(BaseLibVersion)/lib/**/BaseLib.dll;$(NuGetPackageRoot)/alchyr.sts2.baselib/$(BaseLibVersion)/Content/BaseLib.pck;$(NuGetPackageRoot)/alchyr.sts2.baselib/$(BaseLibVersion)/Content/BaseLib.json;"/>
         </ItemGroup>
         <Copy SourceFiles="@(BaseLibFiles)" DestinationFolder="$(ModsPath)BaseLib/" />
+    </Target>
+
+    <!-- Godot .pck export — packages everything under RememberCardSort/ (the
+         inner subdir mirroring the mod id) into RememberCardSort.pck alongside
+         the DLL. The game looks for `res://<mod_id>/mod_image.png` for the mod
+         menu thumbnail, so the inner subdir name must equal the mod id.
+
+         Needs Godot 4.5.1 (or MegaDot 4.5.1) on-disk — path set in local.props.
+         Runs the Godot binary headless with the "BasicExport" preset from
+         export_presets.cfg. Skipped (with a warning from CheckDependencyPaths)
+         if GodotPath isn't configured.
+
+         Inputs/Outputs drive MSBuild's incremental-build check: when no input
+         is newer than the .pck on disk, the target is skipped. -->
+    <ItemGroup>
+        <GodotPckInput Include="project.godot;export_presets.cfg;RememberCardSort/**/*" />
+    </ItemGroup>
+
+    <Target Name="GodotPublish" AfterTargets="CopyToModsFolderOnBuild"
+            Condition="'$(DeployToMods)' == 'true' and '$(HasPck)' == 'true' and '$(GodotPath)' != '' and Exists('$(GodotPath)') and '$(IsInnerGodotExport)' != 'true'"
+            Inputs="@(GodotPckInput)"
+            Outputs="$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck">
+        <Message Text="Exporting Godot .pck to mods folder" Importance="high"/>
+        <Exec Command="&quot;$(GodotPath)&quot; --headless --export-pack &quot;BasicExport&quot; &quot;$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck&quot;"
+              EnvironmentVariables="IsInnerGodotExport=true;MSBUILDDISABLENODEREUSE=1"
+              ContinueOnError="WarnAndContinue"/>
+    </Target>
+
+    <Target Name="GodotPublishSkipped" AfterTargets="CopyToModsFolderOnBuild"
+            Condition="'$(DeployToMods)' == 'true' and ('$(HasPck)' != 'true' or '$(GodotPath)' == '' or !Exists('$(GodotPath)'))">
+        <Message Text="Skipping Godot .pck export (HasPck=$(HasPck), GodotPath=$(GodotPath))." Importance="high"/>
+        <!-- Sweep any stale pck so the loader doesn't trip on it. -->
+        <Delete Files="$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck"
+                ContinueOnError="WarnAndContinue"/>
     </Target>
 
     <!-- Local overrides (gitignored). Copy local.props.template to local.props to configure. -->

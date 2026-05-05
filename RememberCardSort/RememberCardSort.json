@@ -1,10 +1,10 @@
 {
   "id": "RememberCardSort",
-  "name": "Remember Card Sort",
+  "name": "RememberCardSort",
   "author": "Shoe",
-  "description": "Persists your last-used deck-view sort across runs and restarts. Highlights the active sort button when it differs from the vanilla default.",
-  "version": "v0.0.1",
-  "has_pck": false,
+  "description": "Remembers your last-used card sort when viewing your deck.",
+  "version": "v0.1.0",
+  "has_pck": true,
   "has_dll": true,
   "dependencies": ["BaseLib"],
   "affects_gameplay": false

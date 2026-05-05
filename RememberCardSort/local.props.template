@@ -1,6 +1,10 @@
 <Project>
-  <!-- Copy to local.props (gitignored) and edit to point at your live mods folder. -->
+  <!-- Copy to local.props (gitignored) and edit to point at your live mods folder
+       and your Godot 4.5.1 (or MegaDot 4.5.1) binary. GodotPath is only needed
+       if you want the mod_image.png to appear in the in-game mod menu;
+       without it, the build still produces a working DLL/manifest. -->
   <PropertyGroup>
     <ModsPath>/media/sf_sts2-mods/</ModsPath>
+    <GodotPath></GodotPath>
   </PropertyGroup>
 </Project>

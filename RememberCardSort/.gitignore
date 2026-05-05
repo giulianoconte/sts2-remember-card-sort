@@ -5,3 +5,5 @@ packages/
 libs/
 local.props
 *.user
+.godot/
+*.import

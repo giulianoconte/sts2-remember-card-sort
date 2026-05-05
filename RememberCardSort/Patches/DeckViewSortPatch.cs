@@ -125,15 +125,16 @@ public static class DeckViewSortPatch
         var priority = SortingPriorityRef(screen);
         if (priority.Count == 0) return;
         var top = priority[0];
+        var enabled = RememberCardSortConfig.HighlightActiveSort;
 
         SetLabelColor(GetSorter(screen, "_obtainedSorter"),
-            top is SortingOrders.Descending);
+            enabled && top is SortingOrders.Descending);
         SetLabelColor(GetSorter(screen, "_typeSorter"),
-            top is SortingOrders.TypeAscending or SortingOrders.TypeDescending);
+            enabled && top is SortingOrders.TypeAscending or SortingOrders.TypeDescending);
         SetLabelColor(GetSorter(screen, "_costSorter"),
-            top is SortingOrders.CostAscending or SortingOrders.CostDescending);
+            enabled && top is SortingOrders.CostAscending or SortingOrders.CostDescending);
         SetLabelColor(GetSorter(screen, "_alphabetSorter"),
-            top is SortingOrders.AlphabetAscending or SortingOrders.AlphabetDescending);
+            enabled && top is SortingOrders.AlphabetAscending or SortingOrders.AlphabetDescending);
     }
 
     private static void SetLabelColor(NCardViewSortButton? button, bool isActiveNonDefault)

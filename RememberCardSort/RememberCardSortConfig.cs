@@ -14,6 +14,14 @@ internal class RememberCardSortConfig : SimpleModConfig
     /// </summary>
     [ConfigHideInUI] public static string DeckSortPriority { get; set; } = "";
 
+    /// <summary>
+    /// When true (default), the active sort button is tinted green when it
+    /// differs from the vanilla default (Obtained ascending). When false,
+    /// the buttons stay at their normal label color regardless of sort
+    /// state — sort persistence still works, only the visual cue is off.
+    /// </summary>
+    public static bool HighlightActiveSort { get; set; } = true;
+
     // Each "category" has exactly two SortingOrders variants, one ascending and one
     // descending. The priority list must contain exactly one variant per category,
     // in some order, so direction-per-button is fully determined by which variant
