@@ -1,0 +1,6 @@
+<Project>
+  <!-- Copy to local.props (gitignored) and edit to point at your live mods folder. -->
+  <PropertyGroup>
+    <ModsPath>/media/sf_sts2-mods/</ModsPath>
+  </PropertyGroup>
+</Project>

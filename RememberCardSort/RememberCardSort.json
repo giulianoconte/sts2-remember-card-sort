@@ -1,0 +1,11 @@
+{
+  "id": "RememberCardSort",
+  "name": "Remember Card Sort",
+  "author": "Shoe",
+  "description": "Persists your last-used deck-view sort across runs and restarts. Highlights the active sort button when it differs from the vanilla default.",
+  "version": "v0.0.1",
+  "has_pck": false,
+  "has_dll": true,
+  "dependencies": ["BaseLib"],
+  "affects_gameplay": false
+}
