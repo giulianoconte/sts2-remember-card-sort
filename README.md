@@ -1,17 +1,15 @@
 # RememberCardSort
 
+Remembers your last-used card sort when viewing your deck. Without this mod, the game always resets to "Obtained ascending" sort when you open your deck.
+
+It also highlights what the current sort is so it's easier to see/remember. This highlight can be disabled in the mod settings.
+
 ## My Mods
 
 - [SlayTheStats](https://www.nexusmods.com/slaythespire2/mods/349) — stats tracking
 - [ExitToDesktop](https://www.nexusmods.com/slaythespire2/mods/553) — qol
-- RememberCardSort — qol *(this mod)*
+- [RememberCardSort](https://www.nexusmods.com/slaythespire2/mods/801) — qol
 - [MoreTino](https://www.nexusmods.com/slaythespire2/mods/753) — memes
-
----
-
-Remembers your last-used card sort when viewing your deck. Without this mod, the game always resets to "Obtained ascending" sort when you open your deck.
-
-It also highlights what the current sort is so it's easier to see/remember. This highlight can be disabled in the mod settings.
 
 ## Requirements
 

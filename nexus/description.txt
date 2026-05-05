@@ -1,12 +1,12 @@
-My Mods
-- SlayTheStats: https://www.nexusmods.com/slaythespire2/mods/349 - stats tracking
-- ExitToDesktop: https://www.nexusmods.com/slaythespire2/mods/553 - qol
-- RememberCardSort: <TODO_NEXUS_URL> - qol
-- MoreTino: https://www.nexusmods.com/slaythespire2/mods/753 - memes
-
 Remembers your last-used card sort when viewing your deck. Without this mod, the game always resets to "Obtained ascending" sort when you open your deck.
 
 It also highlights what the current sort is so it's easier to see/remember. This highlight can be disabled in the mod settings.
+
+My Mods
+- SlayTheStats: https://www.nexusmods.com/slaythespire2/mods/349 - stats tracking
+- ExitToDesktop: https://www.nexusmods.com/slaythespire2/mods/553 - qol
+- RememberCardSort: https://www.nexusmods.com/slaythespire2/mods/801 - qol
+- MoreTino: https://www.nexusmods.com/slaythespire2/mods/753 - memes
 
 Requirements
 - BaseLib v3.1.0 or later: https://www.nexusmods.com/slaythespire2/mods/103
@@ -21,3 +21,4 @@ The remembered sort is stored in RememberCardSort.cfg next to your STS2 save dat
 
 Uninstalling
 Delete the RememberCardSort/ folder from your mods directory. Optionally delete RememberCardSort.cfg from mod_configs/ (paths above) to wipe the remembered sort.
+
