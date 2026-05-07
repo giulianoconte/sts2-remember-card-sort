@@ -1,2 +1,6 @@
 commit*
 *.zip
+
+# Captured Godot session logs (from redeploy.sh / watch-log.sh) and the
+# watcher's PID/output files.
+logs/
