@@ -44,7 +44,7 @@
 
     <PropertyGroup>
         <NoWarn>$(NoWarn);MSB3270;STS002</NoWarn>
-        <BaseLibVersion>3.1.2</BaseLibVersion>
+        <BaseLibVersion>3.1.0</BaseLibVersion>
         <!-- Flip to false (and keep RememberCardSort.json has_pck in sync) if
              we ever drop the .pck contents. While true, GodotPublish runs and
              ships the mod_image.png inside RememberCardSort.pck. -->
