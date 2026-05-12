@@ -2,7 +2,6 @@ bin/
 obj/
 dist/
 packages/
-libs/
 local.props
 *.user
 .godot/
