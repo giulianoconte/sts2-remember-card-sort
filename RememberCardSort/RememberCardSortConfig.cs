@@ -79,11 +79,4 @@ internal class RememberCardSortConfig : SimpleModConfig
 
         return true;
     }
-
-    /// <summary>
-    /// True iff <paramref name="top"/> is the vanilla-default top sort
-    /// (Obtained ascending = "obtained downward" in the user's terms). All
-    /// other top sorts trigger the green active-sort highlight.
-    /// </summary>
-    public static bool IsDefaultTop(SortingOrders top) => top == SortingOrders.Ascending;
 }

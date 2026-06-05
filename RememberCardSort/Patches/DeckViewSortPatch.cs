@@ -10,8 +10,8 @@ using MegaCrit.Sts2.Core.Nodes.Screens.CardLibrary;
 namespace RememberCardSort.Patches;
 
 // Persists the deck-view sort across runs and highlights the active sort
-// button green when it differs from the vanilla default (Obtained
-// ascending = "obtained downward").
+// button green whenever the highlight setting is on — including when the
+// active sort is the vanilla default (Obtained ascending).
 //
 // _Ready postfix:    parse the saved priority list, write it onto the screen
 //                    instance, redraw the cards, then refresh button colors.
@@ -128,7 +128,7 @@ public static class DeckViewSortPatch
         var enabled = RememberCardSortConfig.HighlightActiveSort;
 
         SetLabelColor(GetSorter(screen, "_obtainedSorter"),
-            enabled && top is SortingOrders.Descending);
+            enabled && top is SortingOrders.Ascending or SortingOrders.Descending);
         SetLabelColor(GetSorter(screen, "_typeSorter"),
             enabled && top is SortingOrders.TypeAscending or SortingOrders.TypeDescending);
         SetLabelColor(GetSorter(screen, "_costSorter"),
@@ -137,13 +137,13 @@ public static class DeckViewSortPatch
             enabled && top is SortingOrders.AlphabetAscending or SortingOrders.AlphabetDescending);
     }
 
-    private static void SetLabelColor(NCardViewSortButton? button, bool isActiveNonDefault)
+    private static void SetLabelColor(NCardViewSortButton? button, bool isActive)
     {
         if (button == null) return;
         var label = ((Node)button).GetNodeOrNull<MegaLabel>("%Label");
         if (label == null) return;
 
-        if (isActiveNonDefault)
+        if (isActive)
             label.AddThemeColorOverride("font_color", ActiveSortColor);
         else
             label.RemoveThemeColorOverride("font_color");

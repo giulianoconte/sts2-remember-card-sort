@@ -3,7 +3,7 @@
   "name": "RememberCardSort",
   "author": "Shoe",
   "description": "Remembers your last-used card sort when viewing your deck.",
-  "version": "v0.1.2",
+  "version": "v1.0.0",
   "has_pck": true,
   "has_dll": true,
   "dependencies": ["BaseLib"],
