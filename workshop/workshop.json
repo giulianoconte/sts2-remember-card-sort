@@ -1,0 +1,10 @@
+{
+  "title": "Remember Card Sort",
+  "description": "Remembers your last-used card sort when viewing your deck — the game otherwise resets to \"Obtained ascending\" every time you open it. Optionally highlights the active sort (toggle in mod settings). Doesn't affect gameplay.",
+  "visibility": "private",
+  "changeNote": "",
+  "tags": [],
+  "dependencies": [3737335127],
+  "minBranch": null,
+  "maxBranch": null
+}
