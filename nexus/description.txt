@@ -20,5 +20,4 @@ The remembered sort is stored in RememberCardSort.cfg next to your STS2 save dat
 - Linux: ~/.local/share/Slay the Spire 2/mod_configs/
 
 Uninstalling
-Delete the RememberCardSort/ folder from your mods directory. Optionally delete RememberCardSort.cfg from mod_configs/ (paths above) to wipe the remembered sort.
-
+Delete the RememberCardSort/ folder from your mods directory. Optionally delete RememberCardSort.cfg from mod_configs/ (paths above) to wipe the remembered sort. 
